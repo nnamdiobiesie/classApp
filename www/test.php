@@ -1,21 +1,9 @@
-<?php
-
-define('DBNAME', 'store');
-define('DBUSER', 'root');
-define('DBPASS', 'peterpan');
+<form id="register" method="POST", enctype="multipart/form-data">
+		<p> Please upload a picture </p>
+		<input type="file" name="pics">
 
 
-try{
-$conn = new PDO('mysql:host=localhost;dbname'.DBNAME, DBUSER, DPASS);
-
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
-
-}catch(PDOException $err) {
+		<input type="submit" name="save">
 
 
-echo $err->getMessage();
-
-
-}
-
-?>
+	</form>
