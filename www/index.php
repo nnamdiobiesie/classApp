@@ -1,6 +1,7 @@
 <?php
 
-echo "Hello World";
+$name = 1 + 1; 
+echo $name;
 
 
 
