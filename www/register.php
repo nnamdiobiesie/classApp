@@ -11,7 +11,7 @@ include ('includes/header.php');
 
 
 include('includes/db.php');
-include ('includes/files.php');
+include('includes/files.php');
 
 	?>
 
@@ -37,6 +37,11 @@ include ('includes/files.php');
 							if(empty($_POST['email'])){
 
 								$errors['email'] = "Please enter your email";
+
+							}
+							if(doesEmailExist($conn, $_POST['email'])){
+
+								$errors['email'] = "Email already Exists";
 
 							}
 
