@@ -9,6 +9,8 @@
 $page_title = "Register";
 include ('includes/header.php');
 
+include('includes/db.php');
+
 	?>
 
 	<?php
@@ -54,7 +56,29 @@ include ('includes/header.php');
 
 							if(empty($errors)){
 
-									//Do database stuff
+									// database stuff
+								//REMOVES ALL WHITE SPACES IN YOUR. AND RETURNS A NEW ARRAY THAT HAS BEEN TRIMMED.
+								$clean = array_map('trim', $_POST);
+
+
+								/// TAKES INPUTTED PASSWORD AND ENCRYPTS IT.
+								$hash = password_hash($clean['password'], PASSWORD_BCRYPT);
+
+										//PREPARE - THIS PREPARES A STATEMENT FOR EXECUTION. before you do anything in your database, you must first prepare
+								$stmt = $conn->prepare("INSERT INTO admin(first_name, last_name, email, hash) VALUES(:f, :l, e:, h:)");
+																													//PLACEHOLDERS USED TN THE PROCESS OF PASSING OUR VALUES
+
+								$data = [
+									":f" => $clean['fname'],
+									":l" =. $clean['lname'],
+									":e" => $clean['email'],
+									":h" => $hash
+
+								];
+
+
+								$stmt->execute($data);
+
 
 							}else {
 
