@@ -9,7 +9,9 @@
 $page_title = "Register";
 include ('includes/header.php');
 
+
 include('includes/db.php');
+include ('includes/files.php');
 
 	?>
 
@@ -61,33 +63,35 @@ include('includes/db.php');
 								$clean = array_map('trim', $_POST);
 
 
-								/// TAKES INPUTTED PASSWORD AND ENCRYPTS IT.
+										doAdminRegister($conn, $clean);
+
+							/*	/// TAKES INPUTTED PASSWORD AND ENCRYPTS IT.
 								$hash = password_hash($clean['password'], PASSWORD_BCRYPT);
 
 										//PREPARE - THIS PREPARES A STATEMENT FOR EXECUTION. before you do anything in your database, you must first prepare
-								$stmt = $conn->prepare("INSERT INTO admin(first_name, last_name, email, hash) VALUES(:f, :l, e:, h:)");
+								$stmt = $conn->prepare("INSERT INTO admin(first_name, last_name, email, hash) VALUES(:f, :l, :e, :h)");
 																													//PLACEHOLDERS USED TN THE PROCESS OF PASSING OUR VALUES
-
+											//HERE IT L
 								$data = [
 									":f" => $clean['fname'],
-									":l" =. $clean['lname'],
+									":l" => $clean['lname'],
 									":e" => $clean['email'],
 									":h" => $hash
 
 								];
 
 
-								$stmt->execute($data);
+								$stmt->execute($data); */
 
 
-							}else {
+							}/*else {
 
 									/*foreach($errors as $err) {
 
 										echo $err.'</br>'; 
-									} */
+									} 
 
-							}
+							} */
 
 
 			}
