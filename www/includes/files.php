@@ -10,7 +10,9 @@ function uploadFile ($files, $name, $loc){
 			$fileName = $rnd.$strip_name;
 			$destination = $loc.$fileName;
 
-			move_uploaded_file($files[$name]['tmp_name'], $destination){
+			if(move_uploaded_file($files[$name]['tmp_name'], $destination))
+
+			{
 
 						$result[] = true;
 			}else {
@@ -20,6 +22,36 @@ function uploadFile ($files, $name, $loc){
 			}
 
 				return $result;
+
+
+
+}
+
+
+
+function doAdminRegister($dbconn, $input){
+
+		$hash = password_hash($input['password'], PASSWORD_BCRYPT);
+
+		$stmt = $dbconn->prepare("INSERT INTO admin(first_name, last_name, email, hash)
+									VALUES(:f, :l, :e, :h)");
+
+
+			$data = [
+
+					":f" => $input['fname'],
+					":l" => $input['lname'],
+					":e" => $input['email'],
+					":h" => $hash
+
+
+
+			];
+
+
+			$stmt->execute($data);
+
+
 
 
 
