@@ -109,35 +109,53 @@ include('includes/files.php');
 		<form id="register"  action ="register.php" method ="POST">
 			<div>
 
+			<?php
 
-			<?php 
+					$err = displayErrors($errors, 'fname');
+					echo $err;
+			?>
 
-					//ENABLES ERROR MESSAGE TO APPEAR ABOVE THE FORM FIELD
 
-			if(isset($errors['fname'])) {echo '<span class=err>'.$errors['fname'].'</span>';}?>
+			 
+
+					<!-- ENABLES ERROR MESSAGE TO APPEAR ABOVE THE FORM FIELD -->
+
+			<!--?php if(isset($errors['fname'])) {echo '<span class=err>'.$errors['fname'].'</span>';}?> -->
 				<label>first name:</label>
 				<input type="text" name="fname" placeholder="first name">
 			</div>
 			<div>
-			<?php
-			if(isset($errors['lname'])) {echo '<span class=err>'.$errors['lname'].'</span>';}?>
 
-			
+			<!-- ?php if(isset($errors['lname'])) {echo '<span class=err>'.$errors['lname'].'</span>';}?> -->
+
+			<?php
+
+					$err = displayErrors($errors, 'lname');
+					echo $err;
+			?>
 				<label>last name:</label>	
 				<input type="text" name="lname" placeholder="last name">
 			</div>
 
 			<div>
-			<?php
-			if(isset($errors['email'])) {echo '<span class=err>'.$errors['email'].'</span>';}?>
+			<!--?php if(isset($errors['email'])) {echo '<span class=err>'.$errors['email'].'</span>';}?> -->
 
-		
+				<?php
+
+					$err = displayErrors($errors, 'email');
+					echo $err;
+			?>
 				<label>email:</label>
 				<input type="text" name="email" placeholder="email">
 			</div>
 			<div>
+			<!-- ?php if(isset($errors['password'])) {echo '<span class=err>'.$errors['password'].'</span>';}?> -->
+
 			<?php
-			if(isset($errors['password'])) {echo '<span class=err>'.$errors['password'].'</span>';}?>
+
+					$err = displayErrors($errors, 'password');
+					echo $err;
+			?>
 
 			
 				<label>password:</label>
