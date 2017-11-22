@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+
 $page_title = "Admin Dashboard";
 
 		
@@ -12,10 +12,13 @@ $page_title = "Admin Dashboard";
             // checkLogin();
 
 
-        $errors = [];
+       $errors = [];
 
         $flag = ['Top-Selling', 'Trending', 'Recently-Viewed'];
 
+ 
+define('MAX_FILE_SIZE', '2097152');
+        $ext = ['image/jpg', 'image/jpeg', 'image/png'];
 
         if(array_key_exists('add', $_POST)){
 
@@ -23,50 +26,80 @@ $page_title = "Admin Dashboard";
 
         if(empty($_POST['title'])){
 
-                $errors ['title'] = "Please enter  book title";
+                $errors['title'] = "Please enter  book title";
+        } 
 
-        }       
         if(empty($_POST['author'])){
 
-                $errors ['author'] = "Please enter author";
+                $errors['author'] = "Please enter book author";
+        }
 
-        }   
         if(empty($_POST['price'])){
 
-                $errors ['price'] = "Please enter price";
+                $errors ['price'] = "Please enter book price";
+
+        }  
+
+        if(empty($_POST['cat'])){
+
+                $errors ['cat'] = "Please enter book category";
+
+        } 
+
+        if(empty($_POST['year'])){
+
+                $errors ['year'] = "Please enter year of publication";
 
         }   
-        if(empty($_POST['pub_date'])){
+ 
 
-                $errors ['pub_date'] = "Please enter publication date";
+         if(empty($_POST['flag'])){
+
+                $errors ['flag'] = "Please select a flag";
+
+        }     
+
+         if(empty($_FILES['image']['name'])){
+
+                $errors ['image'] = "Please enter book image";
 
         }   
-        if(empty($_POST['qty'])){
+        if($_FILES['image']['size'] > MAX_FILE_SIZE){
 
-                $errors ['qty'] = "Please enter quantity";
+                $errors ['image'] = "Image size too large";
 
         }   
-        if(empty($_POST['cat_id'])){
+        if(!in_array($_FILES['image']['type'], $ext)){
 
-                $errors ['cat_id'] = "Please enter category ID";
+                $errors ['image'] = "Image type not supported";
 
         }   
         if(empty($errors)){
 
 
+                    $img = uploadFile($_FILES, 'image', 'uploads/');
+
+
+                        if($img[0]){
+
+                            $location = $img[1];
+
+                       // echo  "File upload successful";
+
+                    }
+
                 $clean = array_map('trim', $_POST);
+                $clean['dest'] = $location;
 
                 addProduct($conn, $clean);
 
                 redirect("view_products.php");
 
                 //header("Location: view_category.php");
-
-
         }
 
 
-    }
+}
 
 
 ?>
@@ -74,48 +107,67 @@ $page_title = "Admin Dashboard";
 
 
 <div class="wrapper">
-		<div id="stream">
-			<form id="register"  action ="add_products.php" method ="POST">
-        		<div>
+			<form id="register"  action ="add_products.php" method ="POST" enctype="multipart/form-data">
 
-        			<label>Add Product:</label>
+        			
                     <div>
                      <?php
                         $info = displayErrors($errors, 'title');
                         echo $info;
                 ?>
-        			<p> Title* <input type="text" name="title" placeholder="Title"></Label>
+        			<label>Title*</label>  
+                    <input type="text" name="title" placeholder="Title">
                     </div>
+
                     <div>
                      <?php
                         $info = displayErrors($errors, 'author');
                         echo $info;
                 ?>
-                   <p> Author* <input type="text" name="author" placeholder="Author"></Label>
+                   <label>Author*</label>
+                  <input type="text" name="author" placeholder="Author">
                    </div>
+
                    <div>
                     <?php
                         $info = displayErrors($errors, 'price');
                         echo $info;
                 ?>
-                   <label> Price* <input type="text" name="price" placeholder="Price"></Label>
+                   <label> Price* </Label>
+                   <input type="text" name="price" placeholder="Price">
                    </div>
+
                    <div>
                     <?php
                         $info = displayErrors($errors, 'year');
                         echo $info;
                 ?>
-                   <label> Publication Date* <input type="date" name="year" placeholder="year"></Label>
+                   <label> Publication Date*</Label>
+                   <input type="text" name="year" placeholder="year">
                    </div>
+
                    <div>
                    
                     <?php
                         $info = displayErrors($errors, 'cat');
                         echo $info;
                 ?>
-                   <Label> Category* <input type="text" name="cat" placeholder="Category"></Label>
+                  
+                   <label>Category </label>
+                        <select name="cat">
+                            <option value> Select Categories </option>
+                             
+                     <?php
+                                $data = fetchCategory($conn);
+                                echo $data;
+
+                     ?>
+
+                     </select>
                    </div>
 
+
+                    <div>
                         <?php
                         $info = displayErrors($errors, 'flag');
                         echo $info;
@@ -126,21 +178,26 @@ $page_title = "Admin Dashboard";
                                 <?php foreach ($flag as $fl) { ?>
                         <option value="<?php echo $fl; ?>"><?php echo $fl; ?> </option>
                      <?php } ?>
+                     </select>
                    </div>
 
                    <div> 
+                   <?php
+                                $err = displayErrors($errors, 'image');
+                        echo $err;
+
+                     ?>
+
                         <label> Book Image:</label>
-                        <p> Please upload a picture </p>
 
                         <input type="file" name="image">
 
                         </div>
-                    <input type="submit" name="add" value="Add" >
-        		</div>
+                    <input type="submit" name="add" value="Add Products" >
                 
             </form>
   			
-		</div>
+		
 	</div>
 
 
